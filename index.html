@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <base href="/">
+
+  <meta charset="UTF-8">
+  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+  <meta name="description" content="Ketterer Holz Webapp">
+
+  <!-- iOS meta tags & icons -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="Ketterer Holz">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+
+  <!-- Favicon -->
+  <link rel="icon" href="favicon.ico" sizes="any">
+
+  <title>saege_werk</title>
+  <link rel="manifest" href="manifest.json">
+
+  <!-- Firebase SDK laden (compat version für Messaging) -->
+  <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-messaging-compat.js"></script>
+
+  <!-- Google Maps API Key wird aus config.js geladen -->
+  <script src="config.js"></script>
+  <script>
+    // Dynamisch Google Maps laden mit dem API Key aus config.js
+    if (window.GOOGLE_MAPS_API_KEY) {
+      const script = document.createElement('script');
+      script.src = `https://maps.googleapis.com/maps/api/js?key=${window.GOOGLE_MAPS_API_KEY}&libraries=drawing,visualization,places`;
+      script.async = true;
+      document.head.appendChild(script);
+    } else {
+      console.error('Google Maps API Key nicht gefunden. Bitte config.js erstellen!');
+    }
+  </script>
+
+  <!-- Firebase Messaging Initialization -->
+  <script>
+    (async function initializeFirebaseMessaging() {
+      console.log('🔥 Initialisiere Firebase Messaging...');
+
+      if (!('serviceWorker' in navigator)) {
+        console.warn('⚠️ Service Worker nicht unterstützt');
+        return;
+      }
+
+      try {
+        // 1. Registriere Service Worker im ROOT
+        console.log('📝 Registriere Service Worker...');
+        const registration = await navigator.serviceWorker.register(
+          '/firebase-messaging-sw.js',
+          { scope: '/' }
+        );
+
+        console.log('✅ Service Worker registriert');
+        console.log('   URL: /firebase-messaging-sw.js');
+        console.log('   Scope:', registration.scope);
+
+        // Warte bis Service Worker aktiv ist
+        await navigator.serviceWorker.ready;
+        console.log('✅ Service Worker bereit');
+
+        // 2. Initialisiere Firebase im Main Thread
+        console.log('🔥 Initialisiere Firebase App...');
+        if (!firebase.apps.length) {
+          firebase.initializeApp({
+            apiKey: "AIzaSyC6knKj_yShtGUhwYKQV0ZyFJuAr_ab974",
+            authDomain: "saegewerk-f9ecb.firebaseapp.com",
+            projectId: "saegewerk-f9ecb",
+            storageBucket: "saegewerk-f9ecb.appspot.com",
+            messagingSenderId: "519080850892",
+            appId: "1:519080850892:web:aa6aa4e74d4d90038c1969",
+            measurementId: "G-DHJT9JJ10C"
+          });
+          console.log('✅ Firebase App initialisiert');
+        }
+
+        // 3. Initialisiere Messaging
+        console.log('📱 Initialisiere Firebase Messaging...');
+        const messaging = firebase.messaging();
+
+        // Speichere für Flutter
+        window.fcmServiceWorkerRegistration = registration;
+        window.fcmMessaging = messaging;
+        window.fcmServiceWorkerReady = true;
+
+        console.log('✅ Firebase Messaging bereit!');
+        console.log('   Flutter kann jetzt FCM Token abrufen');
+
+        // Optional: Hole Token direkt hier (zum Testen)
+        try {
+          const token = await messaging.getToken({
+            vapidKey: 'BEADjOdjbP14rwOcd3wPE5a3XHtVGygwaCNobh4lVWxYnZTdNcWNxSjfdAcqMRJrJSekPovz9wGUzKGt1e4kj5E'
+          });
+          if (token) {
+            console.log('✅ FCM Token erhalten:', token.substring(0, 20) + '...');
+            window.fcmToken = token;
+          }
+        } catch (tokenError) {
+          console.error('❌ Token-Fehler:', tokenError);
+        }
+
+        // Handle Foreground Messages
+        messaging.onMessage((payload) => {
+          console.log('📨 Foreground Message:', payload);
+        });
+
+      } catch (error) {
+        console.error('❌ Firebase Messaging Fehler:', error);
+        window.fcmServiceWorkerReady = false;
+      }
+    })();
+  </script>
+
+</head>
+<body>
+<script src='https://cdn.jsdelivr.net/npm/pdfjs-dist@4.6.82/build/pdf.min.mjs' type='module'></script>
+<script type='module'>
+  var { pdfjsLib } = globalThis;
+  pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@4.6.82/build/pdf.worker.mjs';
+
+  var pdfRenderOptions = {
+    cMapUrl: 'https://cdn.jsdelivr.net/npm/pdfjs-dist@4.6.82/cmaps/',
+    cMapPacked: true,
+  }
+</script>
+<script src="flutter_bootstrap.js" async></script>
+</body>
+</html>
