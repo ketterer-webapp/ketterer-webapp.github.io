@@ -88,6 +88,24 @@
         window.fcmServiceWorkerReady = true;
 
         console.log('✅ Firebase Messaging bereit!');
+
+        // Foreground Message Handler (wenn Tab aktiv ist)
+        firebase.messaging().onMessage((payload) => {
+          console.log('📨 Foreground Message empfangen:', payload);
+
+          const notificationTitle = payload.notification.title;
+          const notificationOptions = {
+            body: payload.notification.body,
+            icon: '/icons/Icon-192.png',
+            badge: '/icons/Icon-192.png',
+          };
+
+          // Zeige Notification auch bei aktivem Tab
+          if (Notification.permission === 'granted') {
+            new Notification(notificationTitle, notificationOptions);
+          }
+        });
+
         console.log('   Flutter kann jetzt FCM Token abrufen');
 
         // Optional: Hole Token direkt hier (zum Testen)
@@ -117,6 +135,9 @@
 
 </head>
 <body>
+<!-- 🎤 AUDIO RECORDING - Record Web Library -->
+<script src="https://cdn.jsdelivr.net/npm/record-web@latest/dist/record-web.umd.js"></script>
+
 <script src='https://cdn.jsdelivr.net/npm/pdfjs-dist@4.6.82/build/pdf.min.mjs' type='module'></script>
 <script type='module'>
   var { pdfjsLib } = globalThis;
