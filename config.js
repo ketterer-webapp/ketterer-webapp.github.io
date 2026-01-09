@@ -1,0 +1,2 @@
+window.GOOGLE_MAPS_API_KEY = 'AIzaSyDkJZQJkX2IaMEIDm2xFh0la6ptlDJtVQk';
+window.GOOGLE_PLACES_API_KEY = 'AIzaSyAgcNx5bUZT54VYxbahyAYJvXwgXsaZGNw';
