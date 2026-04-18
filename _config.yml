@@ -1,0 +1,5 @@
+# _config.yml - GitHub Pages Konfiguration
+# Erlaubt das Ausliefern von .well-known Dateien (für App Links)
+
+include:
+  - .well-known

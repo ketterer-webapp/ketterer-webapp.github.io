@@ -1,0 +1,11 @@
+[{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "com.saegewerk.app.saege_werk",
+    "sha256_cert_fingerprints": [
+      "20:81:C2:A5:C6:DF:C6:A1:3C:1B:24:F8:68:68:B4:61:45:8D:88:6B:6E:22:90:FB:07:67:52:58:3C:BD:5D:90",
+      "0A:52:E3:B2:16:AC:D5:6B:FC:B7:66:34:FA:F3:9E:6F:1C:E6:30:93:12:C3:A9:1C:B2:4E:C0:60:55:05:8C:85"
+    ]
+  }
+}]

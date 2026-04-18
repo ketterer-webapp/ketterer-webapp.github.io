@@ -1,0 +1,11 @@
+{
+  "applinks": {
+    "apps": [],
+    "details": [{
+      "appIDs": ["434985WUGD.com.saegewerk.app.saegeWerk"],
+      "components": [
+        { "/": "/m/*" }
+      ]
+    }]
+  }
+}
